@@ -140,11 +140,11 @@ def save_results():
 
 
 def summarise_data_by_hospital():
-    _bin = 15
     """Summarise admission numbers and distances by hospital. Weighted distances are used for
     averaging travel distances - for each LSOA the average distance is multiplied by the number of
     admissions. The average disatnce for each hospital is then the sum of weighted distances divided
     by the number fo admssions"""
+    _bin = 15
     print('Summarising data by hospital')
     _data = Data.results_by_LSOA
     _data['weighted_distance'] = _data['admissions']*_data['closest_hospital_distance']
