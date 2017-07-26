@@ -4,6 +4,10 @@
 General code to calculate travel time/distances from LSOA centroids to acute hospitals, with
 admission numbers per hospital.
 
+Contact
+=======
+michael.allen1966@gmail.com
+
 
 Data
 ====

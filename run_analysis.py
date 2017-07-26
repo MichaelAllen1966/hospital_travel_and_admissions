@@ -1,6 +1,8 @@
 """
 Analysis of patient travel distances and hospital admissions
 
+For info/bugs contact michael.allen1966@gmail.com
+
 Copyright 2017 Michael J Allen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -138,6 +140,7 @@ def save_results():
 
 
 def summarise_data_by_hospital():
+    _bin = 15
     """Summarise admission numbers and distances by hospital. Weighted distances are used for
     averaging travel distances - for each LSOA the average distance is multiplied by the number of
     admissions. The average disatnce for each hospital is then the sum of weighted distances divided
@@ -145,8 +148,8 @@ def summarise_data_by_hospital():
     print('Summarising data by hospital')
     _data = Data.results_by_LSOA
     _data['weighted_distance'] = _data['admissions']*_data['closest_hospital_distance']
-    _data['binned_distance'] = _data['closest_hospital_distance']/15
-    _data['binned_distance'] = (_data['binned_distance'].astype(int) * 15) + 15
+    _data['binned_distance'] = _data['closest_hospital_distance']/_bin
+    _data['binned_distance'] = (_data['binned_distance'].astype(int) * _bin) + _bin
     grouped = _data.groupby(['closest_hospital_postcode'])
     Data.summary_by_hospital = pd.DataFrame()
     Data.summary_by_hospital['admissions'] = grouped['admissions'].sum()
