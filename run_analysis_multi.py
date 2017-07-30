@@ -42,8 +42,8 @@ def main():
     Data.OUTPUT_LOCATION = 'output/test'
     # Main code
     create_output_folder(Data.OUTPUT_LOCATION)
-    initiate_results_tables()
     load_data()
+    initiate_results_tables()
     align_admissions_and_travel_matrix_data()
     check_hospital_list()
     for scenario in range(Data.scenarios+1):
@@ -121,14 +121,14 @@ def initiate_results_tables():
     """Set up dataframes for results"""
     Results.summary_by_hospital_admissions = pd.DataFrame()
     Results.summary_by_hospital_average_distance = pd.DataFrame()
-    Results.binned_admissions_by_distance = pd.DataFrame()
     Results.global_results = pd.DataFrame()
     Results.results_by_LSOA_admissions = pd.DataFrame()
     Results.results_by_LSOA_closest_hospital_postcode = pd.DataFrame()
     Results.results_by_LSOA_closest_hospital_distance = pd.DataFrame()
     Results.results_by_LSOA_weighted_distance = pd.DataFrame()
-    Results.results_by_LSOA_binned_distance = pd.DataFrame()
-
+    max_distance=int(max(Data.travel_matrix_full.max())+15)
+    distance_bins=list(range(15,max_distance,15))
+    Results.binned_admissions_by_distance = pd.DataFrame(index=distance_bins)
 
 def load_data():
     """Load data"""
@@ -152,7 +152,6 @@ def record_results(scenario):
     Results.results_by_LSOA_closest_hospital_postcode[scenario_name] = Data.results_by_LSOA['closest_hospital_postcode']
     Results.results_by_LSOA_closest_hospital_distance[scenario_name] = Data.results_by_LSOA['closest_hospital_distance'].round(decimals=1)
     Results.results_by_LSOA_weighted_distance[scenario_name] = Data.results_by_LSOA['weighted_distance'].round(decimals=1)
-    Results.results_by_LSOA_binned_distance[scenario_name] = Data.results_by_LSOA['binned_distance']
     return()
 
 def save_results():
@@ -160,13 +159,14 @@ def save_results():
     print('\nSaving results')
     Results.summary_by_hospital_admissions.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_admissions.csv')
     Results.summary_by_hospital_average_distance.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_average_distance.csv')
+    Results.binned_admissions_by_distance.fillna(value=0,inplace=True)
     Results.binned_admissions_by_distance.to_csv(Data.OUTPUT_LOCATION+'/binned_admissions_by_distance.csv')
     Results.global_results.to_csv(Data.OUTPUT_LOCATION+'/global_results.csv')
     Results.results_by_LSOA_admissions.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_admissions.csv')
     Results.results_by_LSOA_closest_hospital_postcode.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_postcode.csv')
     Results.results_by_LSOA_closest_hospital_distance.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_distance.csv')
     Results.results_by_LSOA_weighted_distance.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_weighted_distance.csv')
-    Results.results_by_LSOA_binned_distance.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_binned_distance.csv')
+
 
 def summarise_data_by_hospital():
     """Summarise admission numbers and distances by hospital. Weighted distances are used for
