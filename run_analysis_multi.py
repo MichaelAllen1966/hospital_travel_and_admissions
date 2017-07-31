@@ -121,6 +121,7 @@ def initiate_results_tables():
     """Set up dataframes for results"""
     Results.summary_by_hospital_admissions = pd.DataFrame()
     Results.summary_by_hospital_average_distance = pd.DataFrame()
+    Results.summary_by_hospital_maximum_distance = pd.DataFrame()
     Results.global_results = pd.DataFrame()
     Results.results_by_LSOA_admissions = pd.DataFrame()
     Results.results_by_LSOA_closest_hospital_postcode = pd.DataFrame()
@@ -146,6 +147,7 @@ def record_results(scenario):
     scenario_name='scen_'+str(scenario+1)
     Results.summary_by_hospital_admissions[scenario_name] = Data.summary_by_hospital['admissions'].round(decimals=2)
     Results.summary_by_hospital_average_distance[scenario_name] = Data.summary_by_hospital['average_distance'].round(decimals=2)
+    Results.summary_by_hospital_maximum_distance[scenario_name] = Data.summary_by_hospital['maximum_distance'].round(decimals=2)
     Results.binned_admissions_by_distance[scenario_name] = Data.binned_admissions_by_distance.round(decimals=2)
     Results.global_results[scenario_name] = Data.global_results.round(decimals = 2)
     Results.results_by_LSOA_admissions[scenario_name] = Data.results_by_LSOA['admissions'].round(decimals=1)
@@ -159,6 +161,7 @@ def save_results():
     print('\nSaving results')
     Results.summary_by_hospital_admissions.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_admissions.csv')
     Results.summary_by_hospital_average_distance.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_average_distance.csv')
+    Results.summary_by_hospital_maximum_distance.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_maximum_distance.csv')
     Results.binned_admissions_by_distance.fillna(value=0,inplace=True)
     Results.binned_admissions_by_distance.to_csv(Data.OUTPUT_LOCATION+'/binned_admissions_by_distance.csv')
     Results.global_results.to_csv(Data.OUTPUT_LOCATION+'/global_results.csv')
@@ -184,6 +187,8 @@ def summarise_data_by_hospital():
     Data.summary_by_hospital['admissions'] = grouped['admissions'].sum()
     Data.summary_by_hospital['average_distance'] = (grouped['weighted_distance'].sum() /
                                                     grouped['admissions'].sum())
+    Data.summary_by_hospital['maximum_distance'] = (grouped['closest_hospital_distance'].max())
+    
     Data.binned_admissions_by_hospital_and_distance = (pd.pivot_table(_data,
                                          values='admissions',
                                          index=['closest_hospital_postcode'],
@@ -199,6 +204,7 @@ def summarise_data_by_hospital():
     Data.global_results['total_admissions'] = _data['admissions'].sum()
     Data.global_results['average_distance'] = (_data['weighted_distance'].sum()/
                                                _data['admissions'].sum())
+    Data.global_results['maximum_distance'] = _data['closest_hospital_distance'].sum()
 
     return()
 
