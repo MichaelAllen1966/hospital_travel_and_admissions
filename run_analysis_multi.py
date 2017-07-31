@@ -145,30 +145,46 @@ def record_results(scenario):
     print('Recording results')
     # Round results prior to Saving
     scenario_name='scen_'+str(scenario+1)
-    Results.summary_by_hospital_admissions[scenario_name] = Data.summary_by_hospital['admissions'].round(decimals=2)
-    Results.summary_by_hospital_average_distance[scenario_name] = Data.summary_by_hospital['average_distance'].round(decimals=2)
-    Results.summary_by_hospital_maximum_distance[scenario_name] = Data.summary_by_hospital['maximum_distance'].round(decimals=2)
-    Results.binned_admissions_by_distance[scenario_name] = Data.binned_admissions_by_distance.round(decimals=2)
+    Results.summary_by_hospital_admissions[scenario_name] = (
+        Data.summary_by_hospital['admissions'].round(decimals=2))
+    Results.summary_by_hospital_average_distance[scenario_name] = (
+        Data.summary_by_hospital['average_distance'].round(decimals=2))
+    Results.summary_by_hospital_maximum_distance[scenario_name] = (
+        Data.summary_by_hospital['maximum_distance'].round(decimals=2))
+    Results.binned_admissions_by_distance[scenario_name] = (
+        Data.binned_admissions_by_distance.round(decimals=2))
     Results.global_results[scenario_name] = Data.global_results.round(decimals = 2)
-    Results.results_by_LSOA_admissions[scenario_name] = Data.results_by_LSOA['admissions'].round(decimals=1)
-    Results.results_by_LSOA_closest_hospital_postcode[scenario_name] = Data.results_by_LSOA['closest_hospital_postcode']
-    Results.results_by_LSOA_closest_hospital_distance[scenario_name] = Data.results_by_LSOA['closest_hospital_distance'].round(decimals=1)
-    Results.results_by_LSOA_weighted_distance[scenario_name] = Data.results_by_LSOA['weighted_distance'].round(decimals=1)
+    Results.results_by_LSOA_admissions[scenario_name] = (
+        Data.results_by_LSOA['admissions'].round(decimals=1))
+    Results.results_by_LSOA_closest_hospital_postcode[scenario_name] = (
+        Data.results_by_LSOA['closest_hospital_postcode'])
+    Results.results_by_LSOA_closest_hospital_distance[scenario_name] = (
+        Data.results_by_LSOA['closest_hospital_distance'].round(decimals=1))
+    Results.results_by_LSOA_weighted_distance[scenario_name] = (
+        Data.results_by_LSOA['weighted_distance'].round(decimals=1))
     return()
 
 def save_results():
     """Save results to previously defined output location"""
     print('\nSaving results')
-    Results.summary_by_hospital_admissions.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_admissions.csv')
-    Results.summary_by_hospital_average_distance.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_average_distance.csv')
-    Results.summary_by_hospital_maximum_distance.to_csv(Data.OUTPUT_LOCATION+'/summary_by_hospital_maximum_distance.csv')
+    (Results.summary_by_hospital_admissions.to_csv
+     (Data.OUTPUT_LOCATION+'/summary_by_hospital_admissions.csv'))
+    (Results.summary_by_hospital_average_distance.to_csv
+     (Data.OUTPUT_LOCATION+'/summary_by_hospital_average_distance.csv'))
+    (Results.summary_by_hospital_maximum_distance.to_csv
+     (Data.OUTPUT_LOCATION+'/summary_by_hospital_maximum_distance.csv'))
     Results.binned_admissions_by_distance.fillna(value=0,inplace=True)
-    Results.binned_admissions_by_distance.to_csv(Data.OUTPUT_LOCATION+'/binned_admissions_by_distance.csv')
+    (Results.binned_admissions_by_distance.to_csv
+     (Data.OUTPUT_LOCATION+'/binned_admissions_by_distance.csv'))
     Results.global_results.to_csv(Data.OUTPUT_LOCATION+'/global_results.csv')
-    Results.results_by_LSOA_admissions.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_admissions.csv')
-    Results.results_by_LSOA_closest_hospital_postcode.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_postcode.csv')
-    Results.results_by_LSOA_closest_hospital_distance.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_distance.csv')
-    Results.results_by_LSOA_weighted_distance.to_csv(Data.OUTPUT_LOCATION+'/results_by_LSOA_weighted_distance.csv')
+    (Results.results_by_LSOA_admissions.to_csv
+     (Data.OUTPUT_LOCATION+'/results_by_LSOA_admissions.csv'))
+    (Results.results_by_LSOA_closest_hospital_postcode.to_csv
+     (Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_postcode.csv'))
+    (Results.results_by_LSOA_closest_hospital_distance.to_csv
+     (Data.OUTPUT_LOCATION+'/results_by_LSOA_closest_hospital_distance.csv'))
+    (Results.results_by_LSOA_weighted_distance.to_csv
+     (Data.OUTPUT_LOCATION+'/results_by_LSOA_weighted_distance.csv'))
 
 
 def summarise_data_by_hospital():
@@ -188,7 +204,7 @@ def summarise_data_by_hospital():
     Data.summary_by_hospital['average_distance'] = (grouped['weighted_distance'].sum() /
                                                     grouped['admissions'].sum())
     Data.summary_by_hospital['maximum_distance'] = (grouped['closest_hospital_distance'].max())
-    
+
     Data.binned_admissions_by_hospital_and_distance = (pd.pivot_table(_data,
                                          values='admissions',
                                          index=['closest_hospital_postcode'],
