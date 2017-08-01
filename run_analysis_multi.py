@@ -43,9 +43,9 @@ def main():
     # Main code
     create_output_folder(Data.OUTPUT_LOCATION)
     load_data()
-    initiate_results_tables()
     align_admissions_and_travel_matrix_data()
     check_hospital_list()
+    initiate_results_tables()
     for scenario in range(Data.scenarios+1):
         print('\nRunning scenario %d of %d' %(scenario+1, Data.scenarios+1))
         truncate_data_to_available_hospitals(scenario)
@@ -119,9 +119,11 @@ def identify_closest_hospital():
 
 def initiate_results_tables():
     """Set up dataframes for results"""
-    Results.summary_by_hospital_admissions = pd.DataFrame()
-    Results.summary_by_hospital_average_distance = pd.DataFrame()
-    Results.summary_by_hospital_maximum_distance = pd.DataFrame()
+    Results.summary_by_hospital_admissions = pd.DataFrame(index = list(Data.hospitals_full.index))
+    Results.summary_by_hospital_average_distance = (
+        pd.DataFrame(index = list(Data.hospitals_full.index)))
+    Results.summary_by_hospital_maximum_distance = (
+        pd.DataFrame(index = list(Data.hospitals_full.index)))
     Results.global_results = pd.DataFrame()
     Results.results_by_LSOA_admissions = pd.DataFrame()
     Results.results_by_LSOA_closest_hospital_postcode = pd.DataFrame()
