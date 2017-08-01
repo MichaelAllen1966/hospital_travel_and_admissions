@@ -226,7 +226,7 @@ def summarise_data_by_hospital():
     Data.global_results['total_admissions'] = _data['admissions'].sum()
     Data.global_results['average_distance'] = (_data['weighted_distance'].sum()/
                                                _data['admissions'].sum())
-    Data.global_results['maximum_distance'] = _data['closest_hospital_distance'].sum()
+    Data.global_results['maximum_distance'] = _data['closest_hospital_distance'].max()
 
     return()
 
