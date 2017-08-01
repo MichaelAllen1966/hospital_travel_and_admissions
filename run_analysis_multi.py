@@ -169,6 +169,10 @@ def record_results(scenario):
 def save_results():
     """Save results to previously defined output location"""
     print('\nSaving results')
+    Results.summary_by_hospital_admissions.fillna(0,inplace=True)
+    Results.summary_by_hospital_average_distance.fillna(0,inplace=True)
+    Results.summary_by_hospital_maximum_distance.fillna(0,inplace=True)
+    Results.summary_by_hospital_maximum_distance.fillna(0,inplace=True)
     (Results.summary_by_hospital_admissions.to_csv
      (Data.OUTPUT_LOCATION+'/summary_by_hospital_admissions.csv'))
     (Results.summary_by_hospital_average_distance.to_csv
