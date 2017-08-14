@@ -39,7 +39,7 @@ def main():
     """Main code. Note: All data is stored in Data class. Functions access data in Data class
     directly"""
     # ***************** SET OUTPUT LOCATION BELOW ******************
-    Data.OUTPUT_LOCATION = 'output/test'
+    Data.OUTPUT_LOCATION = 'output/dorset_somerset_max_catchment'
     # Main code
     create_output_folder(Data.OUTPUT_LOCATION)
     load_data()
